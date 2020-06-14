@@ -1,0 +1,55 @@
+\chapter{Introduction} 
+
+\section{Summary}
+The aim of the project is to develop a new High Level Synthesis (HLS) flow for the programming language Julia. Julia is a high-level language similar to that of Python and MATLAB with a key difference being that Julia's compiler is able to generate low-level native code that can run as fast as statically-typed C code. This is important when developing algorithms for high performance scientific computing. High Level Synthesis is the process of converting a higher level language, like C++, into a lower level hardware description, like the Hardware Description Language (HDL) VHDL. Due to the complexity of developing such a HLS flow, the project target will be to produce a modular skeleton with the necessary components for a working conversion of Julia to VHDL. This will allow future work to be carried out to improve the algorithms needed to parse and transform the high-level language. 
+
+\subsubsection{Project Novelty}
+There are similar existing projects that bring Julia to GPUs \cite{julia_gpu} and distributed processors \cite{julia_dist_plat}. However, at the time of writing, there are no packages that target FPGAs. In addition, this project has chosen to use a more abstract representation produced at an earlier stage of the Julia compiler than the LLVM Intermediate Representation used by existing tools, with the goal of simplifying the tool flow.
+
+There are many existing HLS flows (LegUp \cite{legup_intro}, Nymble \cite{nymble_intro}) that use a subset of C or C++ for the high-level language specification. Julia is a higher level language, like Python, so is more abstract and difficult to translate to hardware. Existing Python flows \cite{python_hls} require the creation of a separate compiler to perform HLS, as Python's own compiler is written in C. Since much of Julia's compiler is written in Julia, this project benefits from the following:
+
+\begin{itemize}
+    \item Reuse of existing compiler stages.
+    \item The use of, and adapting, existing optimisation passes.
+    \item The use of Julia metaprogramming methods.
+    \item The use of extensive mathematical packages.
+\end{itemize}
+
+As a result, a Julia HLS flow has more potential for improvement than other higher level language flows. Furthermore, the project will make use of existing HLS algorithms implemented in Julia, thereby demonstrating the flexibility and readability of the language.
+
+\iffalse
+whats new and interesting??
+
+- Similar project in julia include Julia for GPUs and distributed processors
+- These target the LLVM layer, we want to use the typed IR to abstract some of the functionality, avoid writing LLVM
+- Most HLS projects uses subsets of C or C++ and again use compiled LLVM layer as input to HLS, Julia is a higher level language than C++ - existing python hls flow but this lacks the language optimisations that julia can do.
+- algorithms will be similar to existing hls flows but there is novelty in implementing them in julia and seeing how effective julia is at optimizing these algorithms
+- julia has optimised methods and libraries that will aid development
+- want to see hwo versatile julia is, is it easier to develop this flow than python flow?
+\fi 
+
+%\pagebreak
+
+\section{Motivation}
+Protoip \cite{protoip} is an advanced rapid prototyping tool created to aid the development of C-based IP in FPGA hardware. Algorithms are written in C++ and then compiled using the Vivado Design Suite for use on an FPGA. MATLAB is used to control the HLS compilation flow, interface with the FPGA boards, and provide a way to compare the C++ code with a version of the algorithm written in MATLAB. Owing to the growing complexity of Protoip, specifically in dealing with the bugs and changes in Vivado HLS, it was decided that a new tool should be created with the aim of replacing this tool in the future. 
+
+One of the main motivations behind Julia and HLS is that they aim to combat the two-language problem \cite{julia_intro}. This problem occurs when a programmer wants to design a highly performant algorithm. Typically, the programmer would prototype the algorithm in a very human-readable, but often slow, language (like Python/MATLAB) before completely re-writing that algorithm using a low level language. This low-level language (such as static C or Verilog) allows for increases in speed by sacrificing readability and increasing the required design time.
+
+The differences in languages are often too great for an individual to have the necessary experience to convert their algorithm themselves. This usually requires experienced  C/Verilog engineers to be introduced to the project to create the performant code. The Julia language aims to reduce the two-language problem, as does HLS. This project attempts to add to Julia's ability to generate fast-running code for single processors and distributed processors, by providing a flow to convert Julia to a HDL.
+
+\section{Requirements Capture}
+\begin{itemize}
+    \item This flow should be able to work with a subset of the Julia language. 
+    \item Programs written in this subset should still able to be compiled and executed on a standard computer.
+    \item The flow should aim to stay within the Julia language with minimal foreign calls to underlying C and LLVM functions.
+    \item The flow should take advantage of the benefits of the Julia language.
+    
+    \item The flow should be able to produce synthesisable HDL code that can work with existing synthesis tools. 
+    
+    \item The framework should be modular to allow for continuous integration and improvement with future work.
+\end{itemize}
+
+
+\section{Report Outline} %TODO
+%list the chapters and roughly what they contain from 2(background onward)
+%best done after the stuff is written i think
